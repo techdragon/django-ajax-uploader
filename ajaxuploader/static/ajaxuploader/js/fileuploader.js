@@ -1108,7 +1108,7 @@ qq.extend(qq.UploadHandlerForm.prototype, {
         this.log("innerHTML = " + doc.body.innerHTML);
                         
         try {
-            response = eval("(" + doc.body.innerHTML + ")");
+            response = eval("(" + doc.body.innerHTML.replace(/<pre>/ig, '').replace(/<\/pre>/ig, '') + ")");
         } catch(err){
             response = {};
         }        
