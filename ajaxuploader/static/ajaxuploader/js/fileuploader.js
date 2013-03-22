@@ -165,6 +165,10 @@ qq.children = function(element){
     return children;
 };
 
+//qq.getByClass = function(element, className){
+//    return jQuery(element).find('.'+className);
+//};
+
 qq.getByClass = function(element, className){
     if (element.querySelectorAll){
         return element.querySelectorAll('.' + className);
@@ -180,7 +184,7 @@ qq.getByClass = function(element, className){
         }
     }
     return result;
-};
+}
 
 /**
  * obj2url() takes a json-object as argument and generates
@@ -503,8 +507,27 @@ qq.FileUploaderBasic.prototype = {
         return Math.max(bytes, 0.1).toFixed(1) + ['kB', 'MB', 'GB', 'TB', 'PB', 'EB'][i];          
     }
 };
-    
-       
+
+qq.replaceHtml = function(el, html) {
+    if( el ) {
+                var oldEl = (typeof el === "string" ? document.getElementById(el) : el);
+                var newEl = document.createElement(oldEl.nodeName);
+
+                // Preserve any properties we care about (id and class in this example)
+                newEl.id = oldEl.id;
+                newEl.className = oldEl.className;
+
+                //set the new HTML and insert back into the DOM
+                newEl.innerHTML = html;
+                if(oldEl.parentNode)
+    	        oldEl.parentNode.replaceChild(newEl, oldEl);
+                else
+	        oldEl.innerHTML = html;
+
+                //return a reference to the new element in case we need it
+                return newEl;
+    }
+};
 /**
  * Class that creates upload widget with drag-and-drop and file list
  * @inherits qq.FileUploaderBasic
@@ -556,7 +579,7 @@ qq.FileUploader = function(o){
     qq.extend(this._options, o);       
 
     this._element = this._options.element;
-    this._element.innerHTML = this._options.template.replace('"','&quot');
+    this._element = qq.replaceHtml(this._element, this._options.template);
     this._listElement = this._options.listElement || this._find(this._element, 'list');
     
     this._classes = this._options.classes;
