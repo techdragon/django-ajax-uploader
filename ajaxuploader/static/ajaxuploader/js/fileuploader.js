@@ -415,7 +415,9 @@ qq.FileUploaderBasic.prototype = {
     },      
     _validateFile: function(file, list_length){
         var name, size;
-        
+        if (this._options.onValidate) {
+            this._options.onValidate.apply(this, arguments);
+        }
         if (file.value){
             // it is a file input            
             // get input value and remove path to normalize
