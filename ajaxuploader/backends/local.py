@@ -9,7 +9,7 @@ from ajaxuploader.backends.base import AbstractUploadBackend
 class LocalUploadBackend(AbstractUploadBackend):
     UPLOAD_DIR = "uploads"
 
-    def setup(self, filename, *args, **kwargs):
+    def setup(self, request, filename, *args, **kwargs):
         self._path = os.path.join(
             settings.MEDIA_ROOT, self.UPLOAD_DIR, filename)
         try:
@@ -54,4 +54,3 @@ class LocalUploadBackend(AbstractUploadBackend):
             return filename
         else:
             return filename_no_extension + str(filename_suffix) + extension
-

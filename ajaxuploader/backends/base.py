@@ -4,7 +4,7 @@ class AbstractUploadBackend(object):
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
 
-    def setup(self, filename, *args, **kwargs):
+    def setup(self, request, filename, *args, **kwargs):
         """Responsible for doing any pre-processing needed before the upload
         starts."""
 
@@ -12,7 +12,7 @@ class AbstractUploadBackend(object):
         """Returns a new name for the file being uploaded."""
 
     def upload_chunk(self, chunk, *args, **kwargs):
-        """Called when a string was read from the client, responsible for 
+        """Called when a string was read from the client, responsible for
         writing that string to the destination file."""
         raise NotImplementedError
 

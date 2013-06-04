@@ -24,7 +24,7 @@ class MongoDBUploadBackend(AbstractUploadBackend):
 
         super(MongoDBUploadBackend, self).__init__(*args, **kwargs)
 
-    def setup(self, filename, encoding='UTF-8', *args, **kwargs):
+    def setup(self, request, filename, encoding='UTF-8', *args, **kwargs):
         """
         Setup MongoDB connection to specified db. Collection is optional
         and will default to fs if not specified.
