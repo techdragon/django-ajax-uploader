@@ -5,19 +5,59 @@ from django.conf import settings
 from easy_thumbnails.files import get_thumbnailer
 
 from ajaxuploader.backends.local import LocalUploadBackend
+from ajaxuploader.backends.default_storage import DefaultStorageUploadBackend
 
-class EasyThumbnailUploadBackend(LocalUploadBackend):
-    DIMENSIONS = (100,000)
+
+class EasyThumbnailLocalUploadBackend(LocalUploadBackend):
+    DIMENSIONS = (100, 000)
     CROP = True
     KEEP_ORIGINAL = False
     QUALITY = 100
     DETAIL = True
     SHARPEN = True
     UPSCALE = True
+
     def upload_complete(self, request, filename):
 
-        options = {'size': self.DIMENSIONS, 'crop': self.CROP, 'quality': self.QUALITY,
-        			'detail': self.DETAIL, 'sharpen': self.SHARPEN,'upscale': self.UPSCALE,}
+        options = (
+            {
+                'size': self.DIMENSIONS,
+                'crop': self.CROP,
+                'quality': self.QUALITY,
+                'detail': self.DETAIL,
+                'sharpen': self.SHARPEN,
+                'upscale': self.UPSCALE,
+            }
+        )
+        thumb = get_thumbnailer(self._path).get_thumbnail(options)
+
+        if not self.KEEP_ORIGINAL:
+            os.unlink(self._path)
+
+        return {"path": self.UPLOAD_DIR + '/' + os.path.split(thumb.path)[1]}
+
+
+class EasyThumbnailDefaultStorageUploadBackend(DefaultStorageUploadBackend):
+    DIMENSIONS = (100, 000)
+    CROP = True
+    KEEP_ORIGINAL = False
+    QUALITY = 100
+    DETAIL = True
+    SHARPEN = True
+    UPSCALE = True
+
+    def upload_complete(self, request, filename):
+
+        options = (
+            {
+                'size': self.DIMENSIONS,
+                'crop': self.CROP,
+                'quality': self.QUALITY,
+                'detail': self.DETAIL,
+                'sharpen': self.SHARPEN,
+                'upscale': self.UPSCALE,
+            }
+        )
         thumb = get_thumbnailer(self._path).get_thumbnail(options)
 
         if not self.KEEP_ORIGINAL:
