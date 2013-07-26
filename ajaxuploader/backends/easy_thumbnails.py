@@ -17,6 +17,11 @@ class EasyThumbnailLocalUploadBackend(LocalUploadBackend):
     SHARPEN = True
     UPSCALE = True
 
+    # def upload_complete(self, request, filename, *args, **kwargs):
+    #     path = settings.MEDIA_URL + self.UPLOAD_DIR + "/" + filename
+    #     self._dest.close()
+    #     return {"path": path}
+
     def upload_complete(self, request, filename):
 
         options = (
@@ -46,6 +51,10 @@ class EasyThumbnailDefaultStorageUploadBackend(DefaultStorageUploadBackend):
     SHARPEN = True
     UPSCALE = True
 
+    # def upload_complete(self, request, filename, *args, **kwargs):
+    #     self._dest.close()
+    #     return {"path": self.path}
+
     def upload_complete(self, request, filename):
 
         options = (
@@ -58,9 +67,9 @@ class EasyThumbnailDefaultStorageUploadBackend(DefaultStorageUploadBackend):
                 'upscale': self.UPSCALE,
             }
         )
-        thumb = get_thumbnailer(self._path).get_thumbnail(options)
+        thumb = get_thumbnailer(self.path).get_thumbnail(options)
 
         if not self.KEEP_ORIGINAL:
-            os.unlink(self._path)
+            os.unlink(self.path)
 
         return {"path": self.UPLOAD_DIR + '/' + os.path.split(thumb.path)[1]}
