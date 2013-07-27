@@ -11,7 +11,7 @@ setup(
     author="Steven Skoczen",
     author_email="steven@agoodcloud.com",
     url="https://github.com/GoodCloud/django-ajax-uploader",
-    version="0.2.5.1",
+    version="0.2.6.0",
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,  # because we're including media that Django needs
