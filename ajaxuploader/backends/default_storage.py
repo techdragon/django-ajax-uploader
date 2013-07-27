@@ -1,4 +1,7 @@
 import os
+import uuid
+
+from urllib import quote_plus
 
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
@@ -17,7 +20,10 @@ class DefaultStorageUploadBackend(AbstractUploadBackend):
 
     def setup(self, request, filename, *args, **kwargs):
         # join UPLOAD_DIR with filename
-        new_path = os.path.join(self.UPLOAD_DIR, filename)
+        new_path = os.path.join(
+            self.UPLOAD_DIR,
+            str(uuid.uuid4()) + quote_plus(filename)
+        )
 
         # save empty file in default storage with path = new_path
         self.path = default_storage.save(new_path, ContentFile(''))
