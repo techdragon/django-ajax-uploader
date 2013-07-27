@@ -16,9 +16,9 @@ class S3UploadBackend(AbstractUploadBackend):
         self._pool.apply_async(
             self._mp.upload_part_from_file(buffer, self._counter))
         buffer.close()
-        
 
-    def setup(self, filename, *args, **kwargs):
+
+    def setup(self, request, filename, *args, **kwargs):
         self._bucket = boto.connect_s3(settings.AWS_ACCESS_KEY_ID,
                                        settings.AWS_SECRET_ACCESS_KEY)\
                             .lookup(settings.AWS_BUCKET_NAME)

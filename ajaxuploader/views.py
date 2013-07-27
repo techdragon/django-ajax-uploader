@@ -4,8 +4,13 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponse, HttpResponseBadRequest, Http404, HttpResponseNotAllowed
 
 from ajaxuploader.backends.local import LocalUploadBackend
+from signals import file_uploaded
+
+__all__ = ['AjaxFileUploader']
+
 
 class AjaxFileUploader(object):
+
     def __init__(self, backend=None, **kwargs):
         if backend is None:
             backend = LocalUploadBackend
@@ -49,8 +54,11 @@ class AjaxFileUploader(object):
             filename = (backend.update_filename(request, filename, *args, **kwargs)
                         or filename)
             # save the file
-            backend.setup(filename, *args, **kwargs)
+            backend.setup(request, filename, *args, **kwargs)
             success = backend.upload(upload, filename, is_raw, *args, **kwargs)
+            if success is True:
+                file_uploaded.send(sender=self.__class__, backend=backend, request=request)
+
             # callback
             extra_context = backend.upload_complete(request, filename, *args, **kwargs)
 

@@ -24,16 +24,16 @@ class CouchDBUploadBackend(AbstractUploadBackend):
 
     Context returned:
     None
-    
+
     """
     def __init__(self, *args, **kwargs):
         self.database = kwargs.pop('db')
         self.connection = None
         self._dest = None
-        
+
         super(CouchDBUploadBackend, self).__init__(*args, **kwargs)
 
-    def setup(self, filename, *args, **kwargs):
+    def setup(self, request, filename, *args, **kwargs):
         self.connection = Server(getattr(settings,
                                          'AJAXUPLOAD_COUCHDB_HOST',
                                          'http://localhost:5984')

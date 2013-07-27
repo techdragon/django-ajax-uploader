@@ -12,11 +12,11 @@ class DefaultStorageUploadBackend(AbstractUploadBackend):
     Uses Django's default storage backend to store the uploaded files
     see https://docs.djangoproject.com/en/dev/topics/files/#file-storage
     """
-    
+
     UPLOAD_DIR = 'uploads'
 
-    def setup(self, filename, *args, **kwargs):
-        # join UPLOAD_DIR with filename 
+    def setup(self, request, filename, *args, **kwargs):
+        # join UPLOAD_DIR with filename
         new_path = os.path.join(self.UPLOAD_DIR, filename)
 
         # save empty file in default storage with path = new_path
