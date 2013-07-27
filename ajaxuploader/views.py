@@ -4,7 +4,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponse, HttpResponseBadRequest, Http404, HttpResponseNotAllowed
 
 from ajaxuploader.backends.local import LocalUploadBackend
-from signals import file_uploaded
+from ajaxuploader.signals import file_uploaded
 
 __all__ = ['AjaxFileUploader']
 
