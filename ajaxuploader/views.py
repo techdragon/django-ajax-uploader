@@ -61,7 +61,7 @@ class AjaxFileUploader(object):
             extra_context = backend.upload_complete(request, path, filename, *args, **kwargs)
 
             if success is True:
-                file_uploaded.send(sender=self.__class__, backend=backend, request=request, filename=filename)
+                file_uploaded.send(sender=self.__class__, backend=backend, request=request, filename=extra_context['path'])
 
             # let Ajax Upload know whether we saved it or not
             ret_json = {'success': success, 'filename': filename}
